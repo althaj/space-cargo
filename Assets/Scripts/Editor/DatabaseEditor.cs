@@ -12,12 +12,18 @@ namespace PSG.SpaceCargo.Editor
     {
         public Database database;
 
+        #region Menu items
+        /// <summary>
+        /// Open the database editor.
+        /// </summary>
         [MenuItem("Space Cargo/Database Editor")]
         static void Init()
         {
             EditorWindow.GetWindow(typeof(DatabaseEditor), false, "Database Editor");
         }
+        #endregion
 
+        #region Editor methods
         private void OnEnable()
         {
             if (EditorPrefs.HasKey(Constants.DATABASE_PATH_KEY))
@@ -126,23 +132,28 @@ namespace PSG.SpaceCargo.Editor
                 }
             }
         }
+        #endregion
 
+        #region Database methods
         /// <summary>
-        /// Delete a hex from the database.
+        /// Create a database asset.
         /// </summary>
-        /// <param name="index">Index of the hex to delete.</param>
-        private void DeleteHex(int index)
+        /// <returns>Returns the new database.</returns>
+        public static Database CreateDatabase()
         {
-            database.HexList[index].DeleteHex();
-            database.HexList.RemoveAt(index);
-        }
+            Database asset = CreateInstance<Database>();
 
-        /// <summary>
-        /// Add a new hex to the database.
-        /// </summary>
-        private void AddHex()
-        {
-            database.HexList.Add(HexData.CreateHex());
+            AssetHelpers.CreateFolder(Constants.DATABASE_PATH);
+
+            asset.HexList = new List<HexData>();
+
+            AssetDatabase.CreateAsset(asset, Constants.DATABASE_PATH + "/Database.asset");
+            AssetDatabase.SaveAssets();
+
+            string databasePath = AssetDatabase.GetAssetPath(asset);
+            EditorPrefs.SetString(Constants.DATABASE_PATH_KEY, databasePath);
+
+            return asset;
         }
 
         /// <summary>
@@ -160,12 +171,12 @@ namespace PSG.SpaceCargo.Editor
                     "No"
                     ))
                 {
-                    database = Database.CreateDatabase();
+                    database = CreateDatabase();
                 }
             }
             else
             {
-                database = Database.CreateDatabase();
+                database = CreateDatabase();
             }
         }
 
@@ -189,5 +200,43 @@ namespace PSG.SpaceCargo.Editor
                 }
             }
         }
+        #endregion
+
+        #region Hex methods
+        /// <summary>
+        /// Add a new hex to the database.
+        /// </summary>
+        private void AddHex()
+        {
+            database.HexList.Add(CreateHex());
+        }
+
+        /// <summary>
+        /// Create a new empty hex asset.
+        /// </summary>
+        /// <returns></returns>
+        private HexData CreateHex()
+        {
+            HexData newHex = CreateInstance<HexData>();
+            newHex.Title = "New hex";
+
+            AssetHelpers.CreateFolder(Constants.HEX_PATH);
+            AssetDatabase.CreateAsset(newHex, AssetDatabase.GenerateUniqueAssetPath(Constants.HEX_PATH + "/New hex.asset"));
+            AssetDatabase.SaveAssets();
+
+            return newHex;
+        }
+
+        /// <summary>
+        /// Delete a hex from the database.
+        /// </summary>
+        /// <param name="index">Index of the hex to delete.</param>
+        private void DeleteHex(int index)
+        {
+            string path = AssetDatabase.GetAssetPath(database.HexList[index]);
+            AssetDatabase.DeleteAsset(path);
+            database.HexList.RemoveAt(index);
+        }
+        #endregion
     }
 }
