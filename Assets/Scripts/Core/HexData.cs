@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace PSG.SpaceCargo.Core
 {
-    [CreateAssetMenu(fileName = "Hex", menuName ="Space Cargo/Hex", order = 1)]
+    [CreateAssetMenu(fileName = "Hex", menuName ="Space Cargo/Hex", order = 2)]
     public class HexData : ScriptableObject
     {
         public string Title;
         public int WorkerSpaces;
         public int RequiredWorkers;
         public int RequiredCredits;
-        // public CardData Card;
+        public CardData Card;
     }
 }

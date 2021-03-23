@@ -17,6 +17,7 @@ namespace PSG.SpaceCargo
         public static readonly string DATABASE_PATH_KEY = "DatabasePath";
         public static readonly string DATABASE_PATH = "Assets/Database";
         public static readonly string HEX_PATH = "Assets/Database/Hexes";
+        public static readonly string CARD_PATH = "Assets/Database/Cards";
 
         #endregion
     }

@@ -10,10 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bea7a0f77b3a5e47ad67fc6bb944d13, type: 3}
-  m_Name: Database
+  m_Name: My custom database
   m_EditorClassIdentifier: 
   HexList:
-  - {fileID: 11400000, guid: 99e2f1ba43c704247bd94e7e65a6b887, type: 2}
-  - {fileID: 11400000, guid: 2909845fb0f4c564d848e66a0dd1446b, type: 2}
-  - {fileID: 11400000, guid: 3caf9636482b43042b469ca8a9559f2d, type: 2}
-  - {fileID: 11400000, guid: d202bf94efa90174897b0b04a1c1cb82, type: 2}
+  - {fileID: 11400000, guid: 29ab1bf10fdd4be44851e6d2c0040138, type: 2}
