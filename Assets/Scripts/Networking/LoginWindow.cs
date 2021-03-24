@@ -9,7 +9,7 @@ namespace PSG.SpaceCargo.Networking
 {
     public class LoginWindow : MonoBehaviourPunCallbacks
     {
-        #region Serialized Variables
+        #region Serialized variables
 
         [Tooltip("Input field for player name.")]
         [SerializeField]
@@ -21,7 +21,7 @@ namespace PSG.SpaceCargo.Networking
 
         #endregion
 
-        #region Private Variables
+        #region Private variables
 
         RoomOptions defaultRoomOptions = new RoomOptions
         {
@@ -32,7 +32,7 @@ namespace PSG.SpaceCargo.Networking
 
         #endregion
 
-        #region MonoBehaviour CallBacks
+        #region MonoBehaviour callbacks
 
         private void Start()
         {
@@ -47,7 +47,7 @@ namespace PSG.SpaceCargo.Networking
         }
         #endregion
 
-        #region Photon CallBacks
+        #region Photon callbacks
 
         /// <summary>
         /// Called when we succesfully connect to master.
@@ -75,12 +75,12 @@ namespace PSG.SpaceCargo.Networking
         {
             Debug.Log($"Joined room {PhotonNetwork.CurrentRoom.Name}.");
 
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(Constants.LOBBY_SCENE_NUMBER);
         }
 
         #endregion
 
-        #region Public Methods
+        #region Public methods
 
         /// <summary>
         /// Method to log in and join a room.

@@ -12,7 +12,7 @@ namespace PSG.SpaceCargo.Networking
 {
     public class Lobby : MonoBehaviourPunCallbacks
     {
-        #region Serialized Variables
+        #region Serialized variables
 
         [Tooltip("Container with the players names.")]
         [SerializeField]
@@ -28,13 +28,13 @@ namespace PSG.SpaceCargo.Networking
 
         #endregion
 
-        #region Private Variables
+        #region Private variables
 
         private GameObject playerNameTemplate;
 
         #endregion
 
-        #region MonoBehaviour CallBacks
+        #region MonoBehaviour callbacks
 
         private void Start()
         {
@@ -44,11 +44,13 @@ namespace PSG.SpaceCargo.Networking
             startGameContainer.SetActive(false);
 
             NetworkHelpers.SetCustomProperty(Constants.PLAYER_READY_STATE, false);
+
+            PhotonNetwork.AutomaticallySyncScene = true;
         }
 
         #endregion
 
-        #region Photon CallBacks
+        #region Photon callbacks
 
         /// <summary>
         /// Called when a custom property was changed.
@@ -80,12 +82,12 @@ namespace PSG.SpaceCargo.Networking
             ReloadPlayersListUI();
 
             if (otherPlayer.IsLocal)
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(Constants.LOGIN_SCENE_NUMBER);
         }
 
         #endregion
 
-        #region Private Methods
+        #region Private methods
 
         /// <summary>
         /// Reload the UI with the list of players and their ready state.
@@ -121,12 +123,13 @@ namespace PSG.SpaceCargo.Networking
                     allPlayersReady = false;
             }
 
-            startGameContainer.SetActive(allPlayersReady);
+            if (PhotonNetwork.IsMasterClient)
+                startGameContainer.SetActive(allPlayersReady);
         }
 
         #endregion
 
-        #region Public Methods
+        #region Public methods
 
         /// <summary>
         /// Switch the local player's ready state. The UI is reloaded once the property is changed on the current player.
@@ -137,6 +140,23 @@ namespace PSG.SpaceCargo.Networking
             NetworkHelpers.SetCustomProperty(Constants.PLAYER_READY_STATE, !isReady);
 
             readyButtonText.text = isReady ? "Ready" : "Not ready";
+        }
+
+        /// <summary>
+        /// If the caller is the master client, start the game.
+        /// </summary>
+        public void StartGame()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+
+                SceneManager.LoadScene(Constants.GAME_SCENE_NUMBER);
+            }
+            else
+            {
+                Debug.LogError("Calling StartGame while not being the master client!");
+            }
         }
 
         #endregion

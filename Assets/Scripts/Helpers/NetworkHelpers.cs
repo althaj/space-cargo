@@ -8,7 +8,7 @@ namespace PSG.SpaceCargo
 {
     public static class NetworkHelpers
     {
-        #region Extension Methods
+        #region Extension methods
 
         /// <summary>
         /// Set a player custom property.
@@ -27,7 +27,7 @@ namespace PSG.SpaceCargo
 
         #endregion
 
-        #region Public Methods
+        #region Public methods
 
         /// <summary>
         /// Set a local player custom property.
