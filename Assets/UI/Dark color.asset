@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bd2e056fc18c564bac8631e0f9f113b, type: 3}
-  m_Name: New hex 3
+  m_Script: {fileID: 11500000, guid: f40268ea086a2784eb3b6deb2fb289e0, type: 3}
+  m_Name: Dark color
   m_EditorClassIdentifier: 
-  Title: New hex
-  WorkerSpaces: 0
-  RequiredWorkers: 0
-  RequiredCredits: 0
-  Card: {fileID: 11400000, guid: 05142c9ac79d24c44b0c9cfa369d5b63, type: 2}
+  Color: {r: 0.14901961, g: 0.14901961, b: 0.14901961, a: 1}

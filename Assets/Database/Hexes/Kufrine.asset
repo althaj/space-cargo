@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bd2e056fc18c564bac8631e0f9f113b, type: 3}
-  m_Name: My nice hex
+  m_Name: Kufrine
   m_EditorClassIdentifier: 
-  Title: My nice hex
+  Title: Kufrine
   WorkerSpaces: 0
   RequiredWorkers: 0
   RequiredCredits: 0
-  Card: {fileID: 11400000, guid: 390723a2bee7d5043b546bb455fddebd, type: 2}
+  Card: {fileID: 11400000, guid: 32d5844f2143f114d956e528ecb068c0, type: 2}

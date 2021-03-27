@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ac41d05d3e434945abd800e23c5e845, type: 3}
-  m_Name: New card 2
+  m_Name: Kufrine
   m_EditorClassIdentifier: 
-  Title: New card
-  Description: 
+  Title: Kufrine
   Image: {fileID: 0}
   Credits: 0
   Actions: 0
