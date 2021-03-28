@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Laser gun
   m_EditorClassIdentifier: 
   Title: Laser gun
-  WorkerSpaces: 0
-  RequiredWorkers: 0
+  WorkerSpaces: 3
+  RequiredWorkers: 1
   RequiredCredits: 0
   Card: {fileID: 11400000, guid: 960dbc0b877f1b44a93caade8344ba56, type: 2}

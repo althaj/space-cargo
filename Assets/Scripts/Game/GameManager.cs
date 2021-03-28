@@ -14,6 +14,10 @@ namespace PSG.SpaceCargo.Game
         [SerializeField]
         private Database database;
 
+        [Tooltip("Hex for the hub (recruiting workers).")]
+        [SerializeField]
+        private HexData hubHex;
+
         [Tooltip("Prefab of a hex piece for spawning.")]
         [SerializeField]
         private GameObject hexPrefab;
@@ -40,7 +44,8 @@ namespace PSG.SpaceCargo.Game
 
             GetHexPositions();
 
-            usedHexes = database.GetRandomHexes(hexCount);
+            usedHexes = database.GetRandomHexes(hexCount - 1);
+            usedHexes.Insert(0, hubHex);
 
             SpawnHexes();
         }

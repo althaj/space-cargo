@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Kufrine
   m_EditorClassIdentifier: 
   Title: Kufrine
-  WorkerSpaces: 0
-  RequiredWorkers: 0
+  WorkerSpaces: 5
+  RequiredWorkers: 2
   RequiredCredits: 0
   Card: {fileID: 11400000, guid: 32d5844f2143f114d956e528ecb068c0, type: 2}

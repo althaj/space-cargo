@@ -19,6 +19,9 @@ namespace PSG.SpaceCargo.Editor
 
         private Texture2D bgTexture;
 
+
+        private Vector2 scrollPosition = Vector2.zero;
+
         #region Menu items
         /// <summary>
         /// Open the database editor.
@@ -101,10 +104,10 @@ namespace PSG.SpaceCargo.Editor
 
                 GUILayout.BeginVertical();
 
-                float width = position.width * 0.96f;
+                float width = position.width * 0.94f;
                 float[] fieldWidths = { width * 0.46f, width * 0.15f, width * 0.15f, width * 0.15f, width * 0.09f };
 
-                #region Add hex button
+                #region Top buttons
                 GUILayout.Space(30);
 
                 GUILayout.BeginHorizontal();
@@ -112,6 +115,16 @@ namespace PSG.SpaceCargo.Editor
                 if (GUILayout.Button("Add hex", GUILayout.ExpandWidth(false)))
                 {
                     AddHex();
+                }
+
+                if (GUILayout.Button("Expand all", GUILayout.ExpandWidth(false)))
+                {
+                    ExpandAll();
+                }
+
+                if (GUILayout.Button("Collapse all", GUILayout.ExpandWidth(false)))
+                {
+                    CollapseAll();
                 }
                 GUILayout.EndHorizontal();
                 #endregion
@@ -127,6 +140,8 @@ namespace PSG.SpaceCargo.Editor
                 GUILayout.Label("Required credits", headerStyle, GUILayout.Width(fieldWidths[3] * 1.03f));
                 GUILayout.EndHorizontal();
                 #endregion
+                
+                scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, false, GUIStyle.none, GUI.skin.verticalScrollbar);
 
                 #region Hex items
                 for (int i = 0; i < database.HexList.Count; i++)
@@ -208,6 +223,12 @@ namespace PSG.SpaceCargo.Editor
 
                     GUILayout.EndVertical();
                     #endregion
+
+                    if (GUI.changed)
+                    {
+                        EditorUtility.SetDirty(database.HexList[i]);
+                        EditorUtility.SetDirty(database.HexList[i].Card);
+                    }
                 }
                 #endregion
 
@@ -217,6 +238,8 @@ namespace PSG.SpaceCargo.Editor
                     GUILayout.Label("This database is empty.");
                 }
                 #endregion
+
+                GUILayout.EndScrollView();
 
                 GUILayout.EndVertical();
 
@@ -312,6 +335,26 @@ namespace PSG.SpaceCargo.Editor
                     foldouts = database.HexList.Select(x => false).ToList();
                 }
             }
+        }
+
+        /// <summary>
+        /// Expand all foldouts.
+        /// </summary>
+        private void ExpandAll()
+        {
+            if(foldouts != null)
+                for (int i = 0; i < foldouts.Count; i++)
+                    foldouts[i] = true;
+        }
+
+        /// <summary>
+        /// Collapse all foldouts.
+        /// </summary>
+        private void CollapseAll()
+        {
+            if (foldouts != null)
+                for (int i = 0; i < foldouts.Count; i++)
+                    foldouts[i] = false;
         }
         #endregion
 

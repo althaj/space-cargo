@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Kapryx
   m_EditorClassIdentifier: 
   Title: Kapryx
-  WorkerSpaces: 0
-  RequiredWorkers: 0
+  WorkerSpaces: 4
+  RequiredWorkers: 2
   RequiredCredits: 0
   Card: {fileID: 11400000, guid: 1fcf823a0358a4d4dadae1a3f739b05c, type: 2}

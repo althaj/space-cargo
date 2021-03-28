@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PSG.SpaceCargo.UI
 {
-    [CreateAssetMenu(fileName = "UI database", menuName = "Space Cargo/UI/Database", order = 1)]
+    [CreateAssetMenu(fileName = "UI database", menuName = "Space Cargo/UI/UI Database", order = 1)]
     public class UIDatabase : ScriptableObject
     {
 

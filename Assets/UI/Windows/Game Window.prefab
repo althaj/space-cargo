@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   database: {fileID: 11400000, guid: da56daef82a60624e9b9d3e0b635949b, type: 2}
+  hubHex: {fileID: 11400000, guid: cad7848b683fe1646b9637e1f52fb9e5, type: 2}
   hexPrefab: {fileID: 7460083390559255515, guid: a1dcbae223d3ad2439797a9a1f8af11b, type: 3}
   hexCount: 8
   hexStartPosition: {x: 0, y: 7, z: -15}

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Title: Kufrine
   Image: {fileID: 0}
-  Credits: 0
-  Actions: 0
+  Credits: 1
+  Actions: 2
   Cards: 0

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Futrite
   m_EditorClassIdentifier: 
   Title: Futrite
-  WorkerSpaces: 0
-  RequiredWorkers: 0
+  WorkerSpaces: 5
+  RequiredWorkers: 1
   RequiredCredits: 0
+  Card: {fileID: 11400000, guid: 78493b3ee6e1e3744ab9422f7a795f1c, type: 2}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PSG.SpaceCargo.Core
 {
-    [CreateAssetMenu(fileName = "Hex", menuName ="Space Cargo/Hex", order = 2)]
+    [CreateAssetMenu(fileName = "Hex", menuName = "Space Cargo/Database/Hex", order = 2)]
     public class HexData : ScriptableObject
     {
         public string Title;

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Daverite
   m_EditorClassIdentifier: 
   Title: Daverite
-  WorkerSpaces: 0
-  RequiredWorkers: 0
-  RequiredCredits: 0
+  WorkerSpaces: 4
+  RequiredWorkers: 1
+  RequiredCredits: 1
+  Card: {fileID: 11400000, guid: 05142c9ac79d24c44b0c9cfa369d5b63, type: 2}

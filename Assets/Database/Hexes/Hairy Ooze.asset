@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hairy Ooze
   m_EditorClassIdentifier: 
   Title: Hairy Ooze
-  WorkerSpaces: 0
-  RequiredWorkers: 0
-  RequiredCredits: 0
+  WorkerSpaces: 2
+  RequiredWorkers: 2
+  RequiredCredits: 4
   Card: {fileID: 11400000, guid: c7648acc96a57de469eb070c2fb2d65a, type: 2}

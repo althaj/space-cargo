@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PSG.SpaceCargo.Core
 {
-    [CreateAssetMenu(fileName = "Database", menuName = "Space Cargo/Database", order = 1)]
+    [CreateAssetMenu(fileName = "Database", menuName = "Space Cargo/Database/Database", order = 1)]
     public class Database : ScriptableObject
     {
         public List<HexData> HexList;

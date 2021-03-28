@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PSG.SpaceCargo.Core
 {
-    [CreateAssetMenu(fileName = "Hex", menuName = "Space Cargo/Hex", order = 2)]
+    [CreateAssetMenu(fileName = "Card", menuName = "Space Cargo/Database/Card", order = 3)]
     public class CardData : ScriptableObject
     {
         public string Title;
