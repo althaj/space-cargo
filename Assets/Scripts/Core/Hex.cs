@@ -29,13 +29,12 @@ namespace PSG.SpaceCargo.Core
         [SerializeField]
         private GameObject iconRequirementsPanel;
 
-        [Tooltip("Custom requirements text..")]
+        [Tooltip("Custom requirements text.")]
         [SerializeField]
         private TMP_Text customRequirementsText;
         #endregion
 
         #region Public methods
-
         /// <summary>
         /// Initialize a new hex with data and position.
         /// Animation will be played to move the hex from current position.
@@ -46,6 +45,7 @@ namespace PSG.SpaceCargo.Core
         public void Initialize(HexData hexData, Vector3 targetPosition, float delay = 0f)
         {
             this.hexData = hexData;
+            name = hexData.Title;
 
             Vector3 tempPosition = targetPosition;
             tempPosition.y = 5f;
@@ -65,33 +65,14 @@ namespace PSG.SpaceCargo.Core
 
                 for (int i = 0; i < hexData.RequiredWorkers; i++)
                 {
-                    CreateIcon(uiDatabase.WorkerSprite);
+                    GameHelpers.CreateIcon(uiDatabase.WorkerSprite, iconRequirementsPanel.transform);
                 }
 
                 for (int i = 0; i < hexData.RequiredCredits; i++)
                 {
-                    CreateIcon(uiDatabase.CreditSprite);
+                    GameHelpers.CreateIcon(uiDatabase.CreditSprite, iconRequirementsPanel.transform);
                 }
             }    
-        }
-
-        #endregion
-
-        #region Private methods
-        /// <summary>
-        /// Create an icon and put it in the icons requirements panel.
-        /// </summary>
-        /// <param name="sprite">Sprite to use for the icon.</param>
-        private void CreateIcon(Sprite sprite)
-        {
-            GameObject imageObject = new GameObject();
-            imageObject.name = sprite.name;
-            imageObject.transform.SetParent(iconRequirementsPanel.transform, false);
-
-            imageObject.AddComponent<CanvasRenderer>();
-            Image image = imageObject.AddComponent<Image>();
-            image.sprite = sprite;
-            image.preserveAspect = true;
         }
         #endregion
     }

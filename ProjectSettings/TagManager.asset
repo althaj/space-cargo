@@ -45,3 +45,6 @@ TagManager:
   - name: Hex
     uniqueID: 2893559501
     locked: 0
+  - name: Card
+    uniqueID: 2157490961
+    locked: 0
