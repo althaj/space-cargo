@@ -30,5 +30,29 @@ namespace PSG.SpaceCargo.Core
 
             return result;
         }
+
+        /// <summary>
+        /// Get Hexes from array of hex titles.
+        /// </summary>
+        /// <param name="titles">Titles of the hexes to get.</param>
+        /// <returns>List of Hex data.</returns>
+        public List<HexData> GetHexesFromTitles(string[] titles)
+        {
+            List<HexData> result = new List<HexData>();
+
+            if (HexList != null)
+            {
+                for (int i = 0; i < titles.Length; i++)
+                {
+                    if(!string.IsNullOrEmpty(titles[i]))
+                        result.Add(HexList.Where(x => x.Title.CompareTo(titles[i]) == 0).FirstOrDefault());
+                }
+            }
+
+            while (result.Count < titles.Length)
+                result.Add(null);
+
+            return result;
+        }
     }
 }

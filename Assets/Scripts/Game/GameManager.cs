@@ -5,6 +5,7 @@ using System.Linq;
 using DG.Tweening;
 using PSG.SpaceCargo.Core;
 using System;
+using Photon.Pun;
 
 namespace PSG.SpaceCargo.Game
 {
@@ -64,11 +65,12 @@ namespace PSG.SpaceCargo.Game
             GetHexPositions();
             GetDeckPositions();
 
-            usedHexes = database.GetRandomHexes(hexCount - 1);
-            usedHexes.Insert(0, hubHex);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                usedHexes = database.GetRandomHexes(hexCount - 1);
 
-            SpawnHexes();
-            SpawnDecks();
+                PhotonView.Get(this).RpcSecure("SpawnHexesAndDecks", RpcTarget.AllBuffered, true, usedHexes.Select(x => x.Title).ToArray());
+            }
         }
         #endregion
 
@@ -76,14 +78,33 @@ namespace PSG.SpaceCargo.Game
         /// <summary>
         /// Spawn hexes for the current game.
         /// </summary>
-        private void SpawnHexes()
+        /// <param name="hexTitles">Titles of the used hexes.</param>
+        [PunRPC]
+        private void SpawnHexesAndDecks(string[] hexTitles)
         {
-            GameObject parentObject = new GameObject("Hexes");
+            usedHexes = database.GetHexesFromTitles(hexTitles);
+            usedHexes.Insert(0, hubHex);
+
+            GameObject hexParent = new GameObject("Hexes");
+            GameObject deckParent = new GameObject("Decks");
+
             for (int i = 0; i < hexCount; i++)
             {
                 if(hexPositions.Length > i && hexPositions[i] != null)
                 {
-                    SpawnHex(usedHexes[i], hexPositions[i].position, i * 0.1f, parentObject.transform);
+                    SpawnHex(usedHexes[i], hexPositions[i].position, i * 0.1f, hexParent.transform);
+
+                    if (usedHexes[i].Card != null && deckPositions[i] != null)
+                    {
+                        // Spawn cards first
+                        List<GameObject> cards = new List<GameObject>();
+                        for (int j = 0; j < 10; j++)
+                        {
+                            cards.Add(SpawnCard(usedHexes[i].Card));
+                        }
+
+                        Deck.CreateDeck(cards, deckPositions[i].position, false, deckParent.transform, 0.3f * i);
+                    }
                 }
             }
         }
@@ -99,6 +120,17 @@ namespace PSG.SpaceCargo.Game
             GameObject hex = Instantiate(hexPrefab, animationStartPosition, Quaternion.identity);
             hex.transform.SetParent(parent, false);
             hex.GetComponent<Hex>().Initialize(hexData, position, delay);
+        }
+
+        /// <summary>
+        /// Spawn a card.
+        /// </summary>
+        /// <param name="cardData">Data to initialize the card with.</param>
+        private GameObject SpawnCard(CardData cardData)
+        {
+            GameObject card = Instantiate(cardPrefab, animationStartPosition, Quaternion.identity);
+            card.GetComponent<Card>().Initialize(cardData);
+            return card;
         }
 
         /// <summary>
@@ -135,43 +167,6 @@ namespace PSG.SpaceCargo.Game
 
             if (deckPositions != null && deckPositions.Length > 0)
                 deckPositions.OrderBy(x => Vector3.Distance(x.position, deckPositions[0].position));
-        }
-
-        /// <summary>
-        /// Spawn the deck at their spawn positions;
-        /// </summary>
-        private void SpawnDecks()
-        {
-            GameObject deckParent = new GameObject("Decks");
-
-            for (int i = 0; i < hexCount; i++)
-            {
-                if (deckPositions.Length > i && deckPositions[i] != null)
-                {
-                    if (usedHexes[i].Card != null)
-                    {
-                        // Spawn cards first
-                        List<GameObject> cards = new List<GameObject>();
-                        for (int j = 0; j < 10; j++)
-                        {
-                            cards.Add(SpawnCard(usedHexes[i].Card));
-                        }
-
-                        Deck.CreateDeck(cards, deckPositions[i].position, false, deckParent.transform, 0.3f * i);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Spawn a card.
-        /// </summary>
-        /// <param name="cardData">Data to initialize the card with.</param>
-        private GameObject SpawnCard(CardData cardData)
-        {
-            GameObject card = Instantiate(cardPrefab, animationStartPosition, Quaternion.identity);
-            card.GetComponent<Card>().Initialize(cardData);
-            return card;
         }
         #endregion
     }
