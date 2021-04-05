@@ -6,20 +6,35 @@ using UnityEngine.UI;
 
 namespace PSG.SpaceCargo.UI
 {
+    /// <summary>
+    /// Component that recolors UI on start.
+    /// </summary>
     public class Recolor : MonoBehaviour
     {
+        /// <summary>
+        /// Color used to recolor the elements.
+        /// </summary>
         [Tooltip("Color used to recolor the elements.")]
         [SerializeField]
         private UIColor color;
 
+        /// <summary>
+        /// Should we recolor children as well?
+        /// </summary>
         [Tooltip("Should we recolor children as well?")]
         [SerializeField]
         private bool recolorChildren;
 
+        /// <summary>
+        /// Should we recolor texts and TMPro texts?
+        /// </summary>
         [Tooltip("Should we recolor texts and TMPro texts?")]
         [SerializeField]
         private bool recolorText;
 
+        /// <summary>
+        /// Should we recolor images?"
+        /// </summary>
         [Tooltip("Should we recolor images?")]
         [SerializeField]
         private bool recolorImages;

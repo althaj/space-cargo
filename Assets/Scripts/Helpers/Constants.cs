@@ -9,6 +9,7 @@ namespace PSG.SpaceCargo
         #region Player custom properties
 
         public static readonly string PLAYER_READY_STATE = "Ready";
+        public static readonly string MATCH_SEED = "Seed";
 
         #endregion
 

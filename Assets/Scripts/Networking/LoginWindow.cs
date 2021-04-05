@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace PSG.SpaceCargo.Networking
 {
+
     public class LoginWindow : MonoBehaviourPunCallbacks
     {
         #region Serialized variables

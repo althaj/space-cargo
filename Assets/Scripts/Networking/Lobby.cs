@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using System;
 using Photon.Realtime;
 using TMPro;
 using PSG.SpaceCargo;
@@ -46,6 +45,9 @@ namespace PSG.SpaceCargo.Networking
             NetworkHelpers.SetCustomProperty(Constants.PLAYER_READY_STATE, false);
 
             PhotonNetwork.AutomaticallySyncScene = true;
+
+            if(PhotonNetwork.IsMasterClient)
+                NetworkHelpers.SetRoomProperty(Constants.MATCH_SEED, Random.Range(int.MinValue, int.MaxValue));
         }
 
         #endregion

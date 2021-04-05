@@ -4,12 +4,15 @@ using UnityEngine;
 using System.Linq;
 using DG.Tweening;
 using PSG.SpaceCargo.Core;
-using System;
 using Photon.Pun;
+using Photon.Realtime;
 
 namespace PSG.SpaceCargo.Game
 {
-    public class GameManager : MonoBehaviour
+    /// <summary>
+    /// Class to manage the game, turns and rules.
+    /// </summary>
+    public class GameManager : MonoBehaviourPunCallbacks
     {
         #region Serialized fields
         [Tooltip("Database of hexes used in the game.")]
@@ -55,6 +58,9 @@ namespace PSG.SpaceCargo.Game
         private List<HexData> usedHexes;
         private Transform[] hexPositions;
         private Transform[] deckPositions;
+        private GamePlayer[] players;
+        private GamePlayer currentPlayer;
+        private int currentPlayerID;
         #endregion
 
         #region MonoBehaviour callbacks
@@ -62,27 +68,24 @@ namespace PSG.SpaceCargo.Game
         {
             DOTween.Init(true, true, LogBehaviour.Verbose);
 
+            Random.InitState((int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.MATCH_SEED]);
             GetHexPositions();
             GetDeckPositions();
-
-            if (PhotonNetwork.IsMasterClient)
-            {
-                usedHexes = database.GetRandomHexes(hexCount - 1);
-
-                PhotonView.Get(this).RpcSecure("SpawnHexesAndDecks", RpcTarget.AllBuffered, true, usedHexes.Select(x => x.Title).ToArray());
-            }
+            SpawnHexesAndDecks();
+            InitializePlayers();
         }
+        #endregion
+
+        #region Photon callbacks
         #endregion
 
         #region Private methods
         /// <summary>
         /// Spawn hexes for the current game.
         /// </summary>
-        /// <param name="hexTitles">Titles of the used hexes.</param>
-        [PunRPC]
-        private void SpawnHexesAndDecks(string[] hexTitles)
+        private void SpawnHexesAndDecks()
         {
-            usedHexes = database.GetHexesFromTitles(hexTitles);
+            usedHexes = database.GetRandomHexes(7);
             usedHexes.Insert(0, hubHex);
 
             GameObject hexParent = new GameObject("Hexes");
@@ -167,6 +170,16 @@ namespace PSG.SpaceCargo.Game
 
             if (deckPositions != null && deckPositions.Length > 0)
                 deckPositions.OrderBy(x => Vector3.Distance(x.position, deckPositions[0].position));
+        }
+
+        /// <summary>
+        /// Initialize the player order.
+        /// </summary>
+        private void InitializePlayers()
+        {
+            players = PhotonNetwork.CurrentRoom.Players.OrderBy(x => x.Key).Select(x => new GamePlayer(x.Value)).Shuffle().ToArray();
+            currentPlayerID = 0;
+            currentPlayer = players[0];
         }
         #endregion
     }
