@@ -1,7 +1,9 @@
 using Photon.Pun;
 using Photon.Realtime;
+using PSG.SpaceCargo.Core;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace PSG.SpaceCargo
@@ -56,6 +58,15 @@ namespace PSG.SpaceCargo
             properties.Add(key, value);
 
             PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+        }
+
+        /// <summary>
+        /// Save hexes to room properties as array of their titles.
+        /// </summary>
+        /// <param name="hexes">List of hexes used in this game.</param>
+        public static void SaveHexesToRoom(List<HexData> hexes)
+        {
+            SetRoomProperty(Constants.USED_HEXES, hexes.Select(x => x.Title).ToArray());
         }
         #endregion
     }

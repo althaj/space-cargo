@@ -10,6 +10,10 @@ namespace PSG.SpaceCargo
 
         public static readonly string PLAYER_READY_STATE = "Ready";
         public static readonly string MATCH_SEED = "Seed";
+        public static readonly string USED_HEXES = "Hexes";
+        public static readonly string PLAYER_DECK = "Deck_{0}";
+        public static readonly string PLAYER_HAND = "Hand_{0}";
+        public static readonly string PLAYER_DISCARD = "Discard_{0}";
 
         #endregion
 

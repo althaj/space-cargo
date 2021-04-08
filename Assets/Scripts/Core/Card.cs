@@ -71,5 +71,22 @@ namespace PSG.SpaceCargo.Core
             }
         }
         #endregion
+
+        #region Static methods
+        /// <summary>
+        /// Instantiate a card object.
+        /// </summary>
+        /// <param name="data">Card data of the card.</param>
+        /// <param name="cardPrefab">Prefab to instantiate the card from.</param>
+        /// <param name="position">Position of the card.</param>
+        /// <param name="rotation">Rotation of the card.</param>
+        /// <returns></returns>
+        public static GameObject CreateCardObject(CardData data, GameObject cardPrefab, Vector3 position, Quaternion rotation)
+        {
+            GameObject cardObject = Instantiate(cardPrefab, position, rotation);
+            cardObject.GetComponent<Card>().Initialize(data);
+            return cardObject;
+        }
+        #endregion
     }
 }

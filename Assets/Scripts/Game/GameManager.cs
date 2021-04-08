@@ -24,10 +24,6 @@ namespace PSG.SpaceCargo.Game
         private Vector3 animationStartPosition;
 
         #region Hex fields
-        [Tooltip("Hex for the hub (recruiting workers).")]
-        [SerializeField]
-        private HexData hubHex;
-
         [Tooltip("Prefab of a hex piece for spawning.")]
         [SerializeField]
         private GameObject hexPrefab;
@@ -50,6 +46,10 @@ namespace PSG.SpaceCargo.Game
         [Tooltip("Prefab of a card for spawning.")]
         [SerializeField]
         private GameObject cardPrefab;
+
+        [Tooltip("Positions of player on the table.")]
+        [SerializeField]
+        private PlayerPosition[] playerPositions;
         #endregion
 
         #endregion
@@ -61,32 +61,43 @@ namespace PSG.SpaceCargo.Game
         private GamePlayer[] players;
         private GamePlayer currentPlayer;
         private int currentPlayerID;
+        private int localPlayerID;
         #endregion
 
         #region MonoBehaviour callbacks
         void Start()
         {
-            DOTween.Init(true, true, LogBehaviour.Verbose);
+            DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(1000, 100);
 
             Random.InitState((int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.MATCH_SEED]);
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                NetworkHelpers.SaveHexesToRoom(database.GetRandomHexes(7));
+            }
+
             GetHexPositions();
             GetDeckPositions();
-            SpawnHexesAndDecks();
             InitializePlayers();
         }
         #endregion
 
         #region Photon callbacks
+        public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+        {
+            if (propertiesThatChanged.ContainsKey(Constants.USED_HEXES))
+                SpawnHexesAndDecks((string[])PhotonNetwork.CurrentRoom.CustomProperties[Constants.USED_HEXES]);
+        }
         #endregion
 
         #region Private methods
         /// <summary>
         /// Spawn hexes for the current game.
         /// </summary>
-        private void SpawnHexesAndDecks()
+        private void SpawnHexesAndDecks(string[] hexes)
         {
-            usedHexes = database.GetRandomHexes(7);
-            usedHexes.Insert(0, hubHex);
+            usedHexes = database.GetHexesFromTitles(hexes);
+            usedHexes.Insert(0, database.HubHex);
 
             GameObject hexParent = new GameObject("Hexes");
             GameObject deckParent = new GameObject("Decks");
@@ -97,16 +108,20 @@ namespace PSG.SpaceCargo.Game
                 {
                     SpawnHex(usedHexes[i], hexPositions[i].position, i * 0.1f, hexParent.transform);
 
-                    if (usedHexes[i].Card != null && deckPositions[i] != null)
+                    if (PhotonNetwork.IsMasterClient)
                     {
-                        // Spawn cards first
-                        List<GameObject> cards = new List<GameObject>();
-                        for (int j = 0; j < 10; j++)
+                        if (usedHexes[i].Card != null && deckPositions[i] != null)
                         {
-                            cards.Add(SpawnCard(usedHexes[i].Card));
-                        }
+                            // Spawn cards first
+                            List<GameObject> cards = new List<GameObject>();
+                            for (int j = 0; j < 10; j++)
+                            {
+                                cards.Add(SpawnCard(usedHexes[i].Card));
+                            }
 
-                        Deck.CreateDeck(cards, deckPositions[i].position, false, deckParent.transform, 0.3f * i);
+                            Deck deck = Deck.CreateDeck(usedHexes[i].Card.Title, cards, deckPositions[i].position, false, deckParent.transform, database, cardPrefab, 0.3f * i);
+                            deck.Save();
+                        }
                     }
                 }
             }
@@ -131,9 +146,7 @@ namespace PSG.SpaceCargo.Game
         /// <param name="cardData">Data to initialize the card with.</param>
         private GameObject SpawnCard(CardData cardData)
         {
-            GameObject card = Instantiate(cardPrefab, animationStartPosition, Quaternion.identity);
-            card.GetComponent<Card>().Initialize(cardData);
-            return card;
+            return Card.CreateCardObject(cardData, cardPrefab, animationStartPosition, transform.rotation);
         }
 
         /// <summary>
@@ -177,7 +190,50 @@ namespace PSG.SpaceCargo.Game
         /// </summary>
         private void InitializePlayers()
         {
-            players = PhotonNetwork.CurrentRoom.Players.OrderBy(x => x.Key).Select(x => new GamePlayer(x.Value)).Shuffle().ToArray();
+            var networkPlayers = PhotonNetwork.CurrentRoom.Players.OrderBy(x => x.Key).Shuffle().ToList();
+
+            for (int i = 0; i < networkPlayers.Count; i++)
+            {
+                if (networkPlayers[i].Value.IsLocal)
+                {
+                    localPlayerID = i;
+                    break;
+                }
+            }
+
+            players = new GamePlayer[networkPlayers.Count];
+            // Asign player positions in the current user perspective.
+            // Also create deck and draw hand.
+            for (int i = 0; i < networkPlayers.Count; i++)
+            {
+                int positionIndex = (localPlayerID - i) % networkPlayers.Count;
+                if (positionIndex < 0)
+                    positionIndex += networkPlayers.Count;
+
+                if(playerPositions.Length >= positionIndex - 1 && playerPositions[positionIndex] != null)
+                {
+                    players[i] = new GamePlayer(networkPlayers[i].Value, database, cardPrefab, networkPlayers[i].Key, playerPositions[positionIndex]);
+                }
+
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    List<GameObject> startingCards = new List<GameObject>();
+                    for (int j = 0; j < 5; j++)
+                    {
+                        startingCards.Add(SpawnCard(database.NothingCard));
+                    }
+                    for (int j = 0; j < 3; j++)
+                    {
+                        startingCards.Add(SpawnCard(database.CreditCard));
+                    }
+                    startingCards = startingCards.Shuffle().ToList();
+
+                    players[i].PlayerDeck.AddCards(startingCards.Take(4).ToList());
+                    players[i].Hand.AddCards(startingCards.Skip(4).Take(4).ToList());
+                    players[i].SaveDecks();
+                }
+            }
+
             currentPlayerID = 0;
             currentPlayer = players[0];
         }

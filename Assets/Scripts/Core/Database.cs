@@ -11,6 +11,10 @@ namespace PSG.SpaceCargo.Core
     {
         public List<HexData> HexList;
 
+        public HexData HubHex;
+        public CardData NothingCard;
+        public CardData CreditCard;
+
         /// <summary>
         /// Get a random shuffled list of hexes from this database.
         /// In case more hexes are requested that are in the database, the remaining values will be null.
@@ -53,6 +57,22 @@ namespace PSG.SpaceCargo.Core
                 result.Add(null);
 
             return result;
+        }
+
+        /// <summary>
+        /// Get card data from title.
+        /// </summary>
+        /// <param name="title">Title of the card.</param>
+        /// <returns>Card data of a card with the same title, or null if not found.</returns>
+        public CardData GetCardData(string title)
+        {
+            if (title == NothingCard.Title)
+                return NothingCard;
+
+            if (title == CreditCard.Title)
+                return CreditCard;
+
+            return HexList.Where(x => x.Card.Title == title).Select(x => x.Card).FirstOrDefault();
         }
     }
 }
