@@ -1,5 +1,7 @@
+using Photon.Pun;
 using Photon.Realtime;
 using PSG.SpaceCargo.Core;
+using PSG.SpaceCargo.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +21,7 @@ namespace PSG.SpaceCargo.Game
 
         #region Private fields
         private Database database;
+        private GameWindow gameWindow;
         #endregion
 
         #region Constructors
@@ -33,6 +36,9 @@ namespace PSG.SpaceCargo.Game
             PlayerDeck = Deck.CreateDeck("Player_" + playerID + "Deck", new List<GameObject>(), PlayerPosition.DeckPosition.position, true, PlayerPosition.DeckPosition.transform, database, cardPrefab, 0f, "Deck");
             Discard = Deck.CreateDeck("Player_" + playerID + "Discard", new List<GameObject>(), PlayerPosition.DiscardPosition.position, true, PlayerPosition.DiscardPosition.transform, database, cardPrefab, 0f, "Discard");
             Hand = Deck.CreateDeck("Player_" + playerID + "Hand", new List<GameObject>(), PlayerPosition.HandPosition.position, true, PlayerPosition.HandPosition.transform, database, cardPrefab, 0f, "Hand");
+
+            if (PhotonNetwork.LocalPlayer == Player)
+                gameWindow = Object.FindObjectOfType<GameWindow>();
         }
         #endregion
 
@@ -57,7 +63,32 @@ namespace PSG.SpaceCargo.Game
             {
                 if(PlayerDeck.Count > 0)
                 {
-                    Hand.AddCard(PlayerDeck.DealCard());
+                    GameObject cardToAdd = PlayerDeck.DealCard();
+                    Hand.AddCard(cardToAdd);
+
+                    if(PhotonNetwork.LocalPlayer == Player)
+                    {
+                        Card card = cardToAdd.GetComponent<Card>();
+                        gameWindow.AddCard(card.CardData);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add cards to player hand.
+        /// </summary>
+        /// <param name="cards">Cards to add.</param>
+        public void AddCardsToHand(List<GameObject> cards)
+        {
+            Hand.AddCards(cards);
+
+            if (PhotonNetwork.LocalPlayer == Player)
+            {
+                foreach (GameObject cardObject in cards)
+                {
+                    Card card = cardObject.GetComponent<Card>();
+                    gameWindow.AddCard(card.CardData);
                 }
             }
         }

@@ -72,7 +72,7 @@ namespace PSG.SpaceCargo.Core
 
             cards.Add(card);
 
-            card.transform.SetParent(transform, false);
+            card.transform.SetParent(transform, true);
 
             MoveCardsToDeck(new List<GameObject> { card }, 0);
 
@@ -181,18 +181,16 @@ namespace PSG.SpaceCargo.Core
         #endregion
 
         #region Private methods
-        private void MoveCard(GameObject card, int index, float delay)
+        private void MoveCard(GameObject card, int indexInDeck, int indexInSequence, float delay)
         {
             Vector3 tempPosition = transform.position;
             tempPosition.y = 5f;
 
-            card.transform.rotation = transform.rotation;
-
             card.transform.DORotate(isFaceDown ? transform.eulerAngles + Vector3.forward * 180 : transform.eulerAngles, 0.1f + delay);
 
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(card.transform.DOMove(tempPosition, 0.1f).SetDelay(0.05f * index + delay));
-            sequence.Append(card.transform.DOMove(transform.position + Vector3.up * cardOffeset * (index + 1), 0.3f).SetEase(Ease.OutBounce));
+            sequence.Append(card.transform.DOMove(tempPosition, 0.1f).SetDelay(0.05f * indexInSequence + delay));
+            sequence.Append(card.transform.DOMove(transform.position + Vector3.up * cardOffeset * (indexInDeck + 1), 0.3f).SetEase(Ease.OutBounce));
             sequence.Play();
         }
 
@@ -204,7 +202,9 @@ namespace PSG.SpaceCargo.Core
         {
             for (int i = 0; i < cardsToMove.Count; i++)
             {
-                MoveCard(cardsToMove[i], i, delay);
+                int index = cards.IndexOf(cardsToMove[i]);
+
+                MoveCard(cardsToMove[i], index, i, delay);
             }
         }
 
@@ -213,13 +213,7 @@ namespace PSG.SpaceCargo.Core
         /// </summary>
         private void MoveCardsToDeck(float delay)
         {
-            Vector3 tempPosition = transform.position;
-            tempPosition.y = 5f;
-
-            for (int i = 0; i < Count; i++)
-            {
-                MoveCard(cards[i], i, delay);
-            }
+            MoveCardsToDeck(cards, delay);
         }
         #endregion
 

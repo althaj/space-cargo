@@ -70,6 +70,17 @@ namespace PSG.SpaceCargo.Core
                 cardTypeText.text = cardData.CardType;
             }
         }
+
+        /// <summary>
+        /// Get the card data of the current card.
+        /// </summary>
+        public CardData CardData
+        {
+            get
+            {
+                return cardData;
+            }
+        }
         #endregion
 
         #region Static methods

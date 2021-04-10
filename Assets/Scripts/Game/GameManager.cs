@@ -80,6 +80,14 @@ namespace PSG.SpaceCargo.Game
             GetDeckPositions();
             InitializePlayers();
         }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                players[0].DrawCards(1);
+            }
+        }
         #endregion
 
         #region Photon callbacks
@@ -229,7 +237,7 @@ namespace PSG.SpaceCargo.Game
                     startingCards = startingCards.Shuffle().ToList();
 
                     players[i].PlayerDeck.AddCards(startingCards.Take(4).ToList());
-                    players[i].Hand.AddCards(startingCards.Skip(4).Take(4).ToList());
+                    players[i].AddCardsToHand(startingCards.Skip(0).Take(8).ToList());
                     players[i].SaveDecks();
                 }
             }
