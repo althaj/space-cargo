@@ -8,8 +8,8 @@ namespace PSG.SpaceCargo.Core
     public class HexData : ScriptableObject
     {
         public string Title;
-        public int SpaceShipSpaces;
-        public int RequiredSpaceShips;
+        public int SpaceshipSpaces;
+        public int RequiredSpaceships;
         public int RequiredCredits;
         public CardData Card;
     }

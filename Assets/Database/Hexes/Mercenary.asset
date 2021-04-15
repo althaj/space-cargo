@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mercenary
   m_EditorClassIdentifier: 
   Title: Mercenary
-  WorkerSpaces: 3
-  RequiredWorkers: 1
+  SpaceshipSpaces: 3
+  RequiredSpaceships: 1
   RequiredCredits: 1
   Card: {fileID: 11400000, guid: a7bb3b2ef7f192c4c8fdb54a4030f0bb, type: 2}

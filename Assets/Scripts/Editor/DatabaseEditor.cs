@@ -164,8 +164,8 @@ namespace PSG.SpaceCargo.Editor
                     }
                     EditorGUI.EndChangeCheck();
 
-                    database.HexList[i].SpaceShipSpaces = EditorGUILayout.IntField("", database.HexList[i].SpaceShipSpaces, GUILayout.Width(fieldWidths[1]));
-                    database.HexList[i].RequiredSpaceShips = EditorGUILayout.IntField("", database.HexList[i].RequiredSpaceShips, GUILayout.Width(fieldWidths[2]));
+                    database.HexList[i].SpaceshipSpaces = EditorGUILayout.IntField("", database.HexList[i].SpaceshipSpaces, GUILayout.Width(fieldWidths[1]));
+                    database.HexList[i].RequiredSpaceships = EditorGUILayout.IntField("", database.HexList[i].RequiredSpaceships, GUILayout.Width(fieldWidths[2]));
                     database.HexList[i].RequiredCredits = EditorGUILayout.IntField("", database.HexList[i].RequiredCredits, GUILayout.Width(fieldWidths[3]));
 
                     if (GUILayout.Button(new GUIContent("X", "Remove hex"), GUILayout.Width(fieldWidths[4])))

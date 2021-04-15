@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Slaurium
   m_EditorClassIdentifier: 
   Title: Slaurium
-  WorkerSpaces: 4
-  RequiredWorkers: 2
+  SpaceshipSpaces: 4
+  RequiredSpaceships: 2
   RequiredCredits: 0
   Card: {fileID: 11400000, guid: 5bd483283e8c7e0498f80e9006199ede, type: 2}

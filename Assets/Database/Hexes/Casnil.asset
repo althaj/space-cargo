@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Casnil
   m_EditorClassIdentifier: 
   Title: Casnil
-  WorkerSpaces: 3
-  RequiredWorkers: 1
+  SpaceshipSpaces: 3
+  RequiredSpaceships: 1
   RequiredCredits: 1
   Card: {fileID: 11400000, guid: 390723a2bee7d5043b546bb455fddebd, type: 2}

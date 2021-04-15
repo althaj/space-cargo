@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rustrite
   m_EditorClassIdentifier: 
   Title: Rustrite
-  WorkerSpaces: 3
-  RequiredWorkers: 2
+  SpaceshipSpaces: 3
+  RequiredSpaceships: 2
   RequiredCredits: 1
   Card: {fileID: 11400000, guid: 278389dc2e4526f4db87f862b77b7d47, type: 2}

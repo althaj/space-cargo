@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Lanary
   m_EditorClassIdentifier: 
   Title: Lanary
-  WorkerSpaces: 3
-  RequiredWorkers: 1
+  SpaceshipSpaces: 3
+  RequiredSpaceships: 1
   RequiredCredits: 1
   Card: {fileID: 11400000, guid: 383e3f84a42272145a0c406d51373df5, type: 2}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Yeplyx
   m_EditorClassIdentifier: 
   Title: Yeplyx
-  WorkerSpaces: 5
-  RequiredWorkers: 2
+  SpaceshipSpaces: 5
+  RequiredSpaceships: 2
   RequiredCredits: 0
   Card: {fileID: 11400000, guid: 3e505a0a6632da243b62a052497c71d9, type: 2}

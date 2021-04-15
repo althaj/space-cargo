@@ -607,6 +607,7 @@ MonoBehaviour:
   titleText: {fileID: 8352122110244494276}
   iconRequirementsPanel: {fileID: 14407469091019518}
   customRequirementsText: {fileID: 3021866470968458683}
+  spaceshipSpacePrefab: {fileID: 7826483114993648110, guid: 21b42c01c3e81ba40922d790c18b9f8f, type: 3}
 --- !u!114 &4709849570150734030
 MonoBehaviour:
   m_ObjectHideFlags: 0

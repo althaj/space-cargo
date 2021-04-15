@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Space pirates
   m_EditorClassIdentifier: 
   Title: Space pirates
-  WorkerSpaces: 0
-  RequiredWorkers: 1
+  SpaceshipSpaces: 0
+  RequiredSpaceships: 1
   RequiredCredits: 2
   Card: {fileID: 11400000, guid: f2d968d80fd95364981f2dc9c04775d3, type: 2}

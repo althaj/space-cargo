@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mirdanite
   m_EditorClassIdentifier: 
   Title: Mirdanite
-  WorkerSpaces: 5
-  RequiredWorkers: 3
+  SpaceshipSpaces: 5
+  RequiredSpaceships: 3
   RequiredCredits: 0
   Card: {fileID: 11400000, guid: 296c175b1edb05c478cc3148f68d53d4, type: 2}

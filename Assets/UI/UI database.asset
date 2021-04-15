@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56369321487c25943b1f36e101adea8f, type: 3}
   m_Name: UI database
   m_EditorClassIdentifier: 
-  LightColor: {r: 0, g: 0, b: 0, a: 0}
-  DarkColor: {r: 0, g: 0, b: 0, a: 0}
-  GreyColor: {r: 0, g: 0, b: 0, a: 0}
+  LightColor: {fileID: 0}
+  DarkColor: {fileID: 11400000, guid: 482e9625dde7e8b428621108834e98d0, type: 2}
+  GreyColor: {fileID: 0}
   CreditSprite: {fileID: 21300000, guid: 437e1390c9225154c99c4da7ac744449, type: 3}
-  WorkerSprite: {fileID: 21300000, guid: b6796e3526cb0f547998159c1757ce45, type: 3}
+  SpaceshipSprite: {fileID: 21300000, guid: 44d2e18f500fadf4a8146d9bee1ae01a, type: 3}
   CardSprite: {fileID: 21300000, guid: b9ed56e7d70484544af7bea6b2bddf92, type: 3}
   ActionSprite: {fileID: 21300000, guid: b2bbfa25b662baf4197e37b581650923, type: 3}

@@ -237,7 +237,7 @@ namespace PSG.SpaceCargo.Game
                     startingCards = startingCards.Shuffle().ToList();
 
                     players[i].PlayerDeck.AddCards(startingCards.Take(4).ToList());
-                    players[i].AddCardsToHand(startingCards.Skip(0).Take(8).ToList());
+                    players[i].AddCardsToHand(startingCards.Skip(4).Take(4).ToList());
                     players[i].SaveDecks();
                 }
             }
