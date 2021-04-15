@@ -35,10 +35,10 @@ namespace PSG.SpaceCargo.UI
         public Sprite CreditSprite;
 
         /// <summary>
-        /// Sprite used as a Worker icon.
+        /// Sprite used as a SpaceShip icon.
         /// </summary>
-        [Tooltip("Sprite used to display a worker.")]
-        public Sprite WorkerSprite;
+        [Tooltip("Sprite used to display a spaceship.")]
+        public Sprite SpaceShipSprite;
 
         /// <summary>
         /// Sprite used as a Draw card icon.

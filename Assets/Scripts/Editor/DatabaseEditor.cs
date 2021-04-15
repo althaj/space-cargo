@@ -135,8 +135,8 @@ namespace PSG.SpaceCargo.Editor
                 GUILayout.BeginHorizontal(headerStyle);
                 GUILayout.Space(width * 0.02f);
                 GUILayout.Label("Title", headerStyle, GUILayout.Width(fieldWidths[0] * 1.03f));
-                GUILayout.Label("Worker spaces", headerStyle, GUILayout.Width(fieldWidths[1] * 1.03f));
-                GUILayout.Label("Required workers", headerStyle, GUILayout.Width(fieldWidths[2] * 1.03f));
+                GUILayout.Label("Spaceship spaces", headerStyle, GUILayout.Width(fieldWidths[1] * 1.03f));
+                GUILayout.Label("Required spaceships", headerStyle, GUILayout.Width(fieldWidths[2] * 1.03f));
                 GUILayout.Label("Required credits", headerStyle, GUILayout.Width(fieldWidths[3] * 1.03f));
                 GUILayout.EndHorizontal();
                 #endregion
@@ -164,8 +164,8 @@ namespace PSG.SpaceCargo.Editor
                     }
                     EditorGUI.EndChangeCheck();
 
-                    database.HexList[i].WorkerSpaces = EditorGUILayout.IntField("", database.HexList[i].WorkerSpaces, GUILayout.Width(fieldWidths[1]));
-                    database.HexList[i].RequiredWorkers = EditorGUILayout.IntField("", database.HexList[i].RequiredWorkers, GUILayout.Width(fieldWidths[2]));
+                    database.HexList[i].SpaceShipSpaces = EditorGUILayout.IntField("", database.HexList[i].SpaceShipSpaces, GUILayout.Width(fieldWidths[1]));
+                    database.HexList[i].RequiredSpaceShips = EditorGUILayout.IntField("", database.HexList[i].RequiredSpaceShips, GUILayout.Width(fieldWidths[2]));
                     database.HexList[i].RequiredCredits = EditorGUILayout.IntField("", database.HexList[i].RequiredCredits, GUILayout.Width(fieldWidths[3]));
 
                     if (GUILayout.Button(new GUIContent("X", "Remove hex"), GUILayout.Width(fieldWidths[4])))

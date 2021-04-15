@@ -13,6 +13,7 @@ namespace PSG.SpaceCargo.Core
         #region Private fields
 
         private HexData hexData;
+        private SpaceShipSpace[] spaceShipSpaces;
 
         #endregion
 
@@ -60,12 +61,12 @@ namespace PSG.SpaceCargo.Core
             {
                 titleText.text = hexData.Title;
 
-                iconRequirementsPanel.SetActive(hexData.RequiredWorkers > 0 || hexData.RequiredCredits > 0);
+                iconRequirementsPanel.SetActive(hexData.RequiredSpaceShips > 0 || hexData.RequiredCredits > 0);
                 customRequirementsText.gameObject.SetActive(false);
 
-                for (int i = 0; i < hexData.RequiredWorkers; i++)
+                for (int i = 0; i < hexData.RequiredSpaceShips; i++)
                 {
-                    GameHelpers.CreateIcon(uiDatabase.WorkerSprite, iconRequirementsPanel.transform);
+                    GameHelpers.CreateIcon(uiDatabase.SpaceShipSprite, iconRequirementsPanel.transform);
                 }
 
                 for (int i = 0; i < hexData.RequiredCredits; i++)
