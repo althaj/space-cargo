@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace PSG.SpaceCargo.Core
 {
-    public class SpaceshipSpace : MonoBehaviour
+    public class Spaceship : MonoBehaviour
     {
-        public Spaceship Ship;
+        
     }
-
 }

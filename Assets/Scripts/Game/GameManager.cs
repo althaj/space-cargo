@@ -106,6 +106,7 @@ namespace PSG.SpaceCargo.Game
         {
             usedHexes = database.GetHexesFromTitles(hexes);
             usedHexes.Insert(0, database.HubHex);
+            usedHexes[0].SpaceshipSpaces = PhotonNetwork.CurrentRoom.PlayerCount;
 
             GameObject hexParent = new GameObject("Hexes");
             GameObject deckParent = new GameObject("Decks");
