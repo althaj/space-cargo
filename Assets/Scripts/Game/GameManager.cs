@@ -14,6 +14,15 @@ namespace PSG.SpaceCargo.Game
     /// </summary>
     public class GameManager : MonoBehaviourPunCallbacks
     {
+        #region Enumerations
+        public enum GamePhase
+        {
+            ShipPlacement = 0,
+            Action = 1,
+            Collection = 2
+        }
+        #endregion
+
         #region Serialized fields
         [Tooltip("Database of hexes used in the game.")]
         [SerializeField]
@@ -56,12 +65,14 @@ namespace PSG.SpaceCargo.Game
 
         #region Private variables
         private List<HexData> usedHexes;
+        private List<Hex> hexes;
         private Transform[] hexPositions;
         private Transform[] deckPositions;
         private GamePlayer[] players;
         private GamePlayer currentPlayer;
         private int currentPlayerID;
         private int localPlayerID;
+        private GamePhase gamePhase;
         #endregion
 
         #region MonoBehaviour callbacks
@@ -79,6 +90,7 @@ namespace PSG.SpaceCargo.Game
             GetHexPositions();
             GetDeckPositions();
             InitializePlayers();
+            SetGamePhase(GamePhase.ShipPlacement);
         }
 
         private void Update()
@@ -91,10 +103,17 @@ namespace PSG.SpaceCargo.Game
         #endregion
 
         #region Photon callbacks
+        /// <summary>
+        /// Runs when a room property is changed.
+        /// </summary>
+        /// <param name="propertiesThatChanged"></param>
         public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
         {
             if (propertiesThatChanged.ContainsKey(Constants.USED_HEXES))
                 SpawnHexesAndDecks((string[])PhotonNetwork.CurrentRoom.CustomProperties[Constants.USED_HEXES]);
+
+            if (propertiesThatChanged.ContainsKey(Constants.GAME_PHASE))
+                BeginGamePhase((GamePhase)PhotonNetwork.CurrentRoom.CustomProperties[Constants.GAME_PHASE]);
         }
         #endregion
 
@@ -104,6 +123,7 @@ namespace PSG.SpaceCargo.Game
         /// </summary>
         private void SpawnHexesAndDecks(string[] hexes)
         {
+            this.hexes = new List<Hex>();
             usedHexes = database.GetHexesFromTitles(hexes);
             usedHexes.Insert(0, database.HubHex);
             usedHexes[0].SpaceshipSpaces = PhotonNetwork.CurrentRoom.PlayerCount;
@@ -134,6 +154,8 @@ namespace PSG.SpaceCargo.Game
                     }
                 }
             }
+
+            BeginTurn();
         }
 
         /// <summary>
@@ -144,9 +166,12 @@ namespace PSG.SpaceCargo.Game
         /// <param name="delay">Delay before playing the spawn animation.</param>
         private void SpawnHex(HexData hexData, Vector3 position, float delay, Transform parent)
         {
-            GameObject hex = Instantiate(hexPrefab, animationStartPosition, Quaternion.identity);
-            hex.transform.SetParent(parent, false);
-            hex.GetComponent<Hex>().Initialize(hexData, position, delay);
+            GameObject hexObject = Instantiate(hexPrefab, animationStartPosition, Quaternion.identity);
+            hexObject.transform.SetParent(parent, false);
+
+            Hex hex = hexObject.GetComponent<Hex>();
+            hex.Initialize(hexData, position, delay);
+            hexes.Add(hex);
         }
 
         /// <summary>
@@ -245,6 +270,51 @@ namespace PSG.SpaceCargo.Game
 
             currentPlayerID = 0;
             currentPlayer = players[0];
+        }
+
+        /// <summary>
+        /// Sets the game phase for all players.
+        /// </summary>
+        /// <param name="phase">New phase to set.</param>
+        private void SetGamePhase(GamePhase phase)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                NetworkHelpers.SetRoomProperty(Constants.GAME_PHASE, gamePhase);
+            }
+        }
+
+        private void BeginGamePhase(GamePhase phase)
+        {
+            gamePhase = phase;
+            // TODO: Display game phase in the UI.
+        }
+
+        /// <summary>
+        /// Begin a turn for the player that's currently on turn.
+        /// </summary>
+        private void BeginTurn()
+        {
+            NetworkHelpers.SetRoomProperty(Constants.PLAYER_ON_TURN, currentPlayerID);
+
+            if (currentPlayer.Player.IsLocal)
+            {
+                switch (gamePhase)
+                {
+                    case GamePhase.ShipPlacement:
+                        foreach(Hex hex in hexes)
+                        {
+                            hex.Highlight();
+                        }
+                        break;
+                    case GamePhase.Action:
+                        break;
+                    case GamePhase.Collection:
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
         #endregion
     }

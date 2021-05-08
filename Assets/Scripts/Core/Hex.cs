@@ -5,16 +5,17 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using PSG.SpaceCargo.UI;
+using UnityEngine.EventSystems;
 
 namespace PSG.SpaceCargo.Core
 {
-    public class Hex : MonoBehaviour
+    public class Hex : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         #region Private fields
-
         private HexData hexData;
         private SpaceshipSpace[] spaceshipSpaces;
-
+        private bool hasFreeSpace;
+        private Color normalHighlightColor;
         #endregion
 
         #region Serialized fields
@@ -37,6 +38,14 @@ namespace PSG.SpaceCargo.Core
         [Tooltip("Prefab of a spaceship space.")]
         [SerializeField]
         private GameObject spaceshipSpacePrefab;
+
+        [Tooltip("Game object that is used as highlight of this hex.")]
+        [SerializeField]
+        private GameObject highlighObject;
+
+        [Tooltip("Color of the highlight when it's highlighted.")]
+        [SerializeField]
+        private Color highlightedColor;
         #endregion
 
         #region Public methods
@@ -51,6 +60,8 @@ namespace PSG.SpaceCargo.Core
         {
             this.hexData = hexData;
             name = hexData.Title;
+
+            normalHighlightColor = highlighObject.GetComponent<Renderer>().material.GetColor("_Color");
 
             Vector3 tempPosition = targetPosition;
             tempPosition.y = 5f;
@@ -79,7 +90,20 @@ namespace PSG.SpaceCargo.Core
                 }
                 
                 spaceshipSpaces = SpawnSpaceshipSpaces(hexData.SpaceshipSpaces);
+                hasFreeSpace = spaceshipSpaces.Length > 0;
             }    
+        }
+
+        /// <summary>
+        /// Highlight the hex if it has any free space.
+        /// </summary>
+        public void Highlight()
+        {
+            Debug.Log(hasFreeSpace);
+            if (hasFreeSpace)
+            {
+                highlighObject.SetActive(true);
+            }
         }
         #endregion
 
@@ -137,6 +161,26 @@ namespace PSG.SpaceCargo.Core
             spaceObject.transform.SetParent(parent, false);
             spaceObject.name = "Spaceship space";
             return spaceObject.GetComponent<SpaceshipSpace>();
+        }
+        #endregion
+
+        #region Pointer methods
+        /// <summary>
+        /// When mouse enters the object.
+        /// </summary>
+        /// <param name="eventData"></param>
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            highlighObject.GetComponent<Renderer>().material.SetColor("_Color", highlightedColor);
+        }
+
+        /// <summary>
+        /// When mouse leaves the object.
+        /// </summary>
+        /// <param name="eventData"></param>
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            highlighObject.GetComponent<Renderer>().material.SetColor("_Color", normalHighlightColor);
         }
         #endregion
     }

@@ -14,6 +14,8 @@ namespace PSG.SpaceCargo
         public static readonly string PLAYER_DECK = "Deck_{0}";
         public static readonly string PLAYER_HAND = "Hand_{0}";
         public static readonly string PLAYER_DISCARD = "Discard_{0}";
+        public static readonly string GAME_PHASE = "GamePhase";
+        public static readonly string PLAYER_ON_TURN = "PlayerOnTurn";
 
         #endregion
 
