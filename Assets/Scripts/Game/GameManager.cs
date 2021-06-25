@@ -73,6 +73,9 @@ namespace PSG.SpaceCargo.Game
         private int currentPlayerID;
         private int localPlayerID;
         private GamePhase gamePhase;
+
+        private int hexLayerMask;
+        private bool hexHighlighted;
         #endregion
 
         #region MonoBehaviour callbacks
@@ -91,6 +94,8 @@ namespace PSG.SpaceCargo.Game
             GetDeckPositions();
             InitializePlayers();
             SetGamePhase(GamePhase.ShipPlacement);
+
+            hexLayerMask = LayerMask.GetMask("Hex");
         }
 
         private void Update()
@@ -98,6 +103,34 @@ namespace PSG.SpaceCargo.Game
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 players[0].DrawCards(1);
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            if (hexHighlighted)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 1000f, hexLayerMask))
+                {
+                    hit.transform.parent.parent.gameObject.TryGetComponent<Hex>(out Hex hex);
+                    if (hex != null)
+                    {
+                        foreach (Hex otherHex in hexes.Where(h => h != hex))
+                        {
+                            otherHex.Unhover();
+                        }
+                        hex.Hover();
+                    }
+                }
+                else
+                {
+                    foreach (Hex hex in hexes)
+                    {
+                        hex.Unhover();
+                    }
+                }
             }
         }
         #endregion
@@ -133,7 +166,7 @@ namespace PSG.SpaceCargo.Game
 
             for (int i = 0; i < hexCount; i++)
             {
-                if(hexPositions.Length > i && hexPositions[i] != null)
+                if (hexPositions.Length > i && hexPositions[i] != null)
                 {
                     SpawnHex(usedHexes[i], hexPositions[i].position, i * 0.1f, hexParent.transform);
 
@@ -244,7 +277,7 @@ namespace PSG.SpaceCargo.Game
                 if (positionIndex < 0)
                     positionIndex += networkPlayers.Count;
 
-                if(playerPositions.Length >= positionIndex - 1 && playerPositions[positionIndex] != null)
+                if (playerPositions.Length >= positionIndex - 1 && playerPositions[positionIndex] != null)
                 {
                     players[i] = new GamePlayer(networkPlayers[i].Value, database, cardPrefab, networkPlayers[i].Key, playerPositions[positionIndex]);
                 }
@@ -302,7 +335,8 @@ namespace PSG.SpaceCargo.Game
                 switch (gamePhase)
                 {
                     case GamePhase.ShipPlacement:
-                        foreach(Hex hex in hexes)
+                        hexHighlighted = true;
+                        foreach (Hex hex in hexes)
                         {
                             hex.Highlight();
                         }

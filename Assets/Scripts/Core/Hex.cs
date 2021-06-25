@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace PSG.SpaceCargo.Core
 {
-    public class Hex : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class Hex : MonoBehaviour
     {
         #region Private fields
         private HexData hexData;
@@ -99,11 +99,26 @@ namespace PSG.SpaceCargo.Core
         /// </summary>
         public void Highlight()
         {
-            Debug.Log(hasFreeSpace);
             if (hasFreeSpace)
             {
                 highlighObject.SetActive(true);
             }
+        }
+
+        /// <summary>
+        /// Hover effect over this hex.
+        /// </summary>
+        public void Hover()
+        {
+            highlighObject.GetComponent<Renderer>().material.SetColor("_Color", highlightedColor);
+        }
+
+        /// <summary>
+        /// Disable hover effect over this hex.
+        /// </summary>
+        public void Unhover()
+        {
+            highlighObject.GetComponent<Renderer>().material.SetColor("_Color", normalHighlightColor);
         }
         #endregion
 
@@ -161,26 +176,6 @@ namespace PSG.SpaceCargo.Core
             spaceObject.transform.SetParent(parent, false);
             spaceObject.name = "Spaceship space";
             return spaceObject.GetComponent<SpaceshipSpace>();
-        }
-        #endregion
-
-        #region Pointer methods
-        /// <summary>
-        /// When mouse enters the object.
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            highlighObject.GetComponent<Renderer>().material.SetColor("_Color", highlightedColor);
-        }
-
-        /// <summary>
-        /// When mouse leaves the object.
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            highlighObject.GetComponent<Renderer>().material.SetColor("_Color", normalHighlightColor);
         }
         #endregion
     }
